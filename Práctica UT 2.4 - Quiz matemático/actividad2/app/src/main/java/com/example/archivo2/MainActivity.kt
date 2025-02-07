@@ -74,8 +74,7 @@ class MainActivity : AppCompatActivity() {
             respuesta.text = "Debe escoger al menos una de las opciones"
             imagen.setImageResource(R.drawable.pantallablanca)
         } else {
-
-            if (opcionSeleccionada()) {
+            if (opcionSeleccionada(numAleatorio)) {
                 respuesta.text = "Correcto"
                 respuesta.setTextColor(ContextCompat.getColor(this, R.color.green))
                 imagen.setImageResource(R.drawable.ok)
@@ -87,54 +86,40 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun opcionSeleccionada(): Boolean {
+    fun opcionSeleccionada(num: Int): Boolean {
 
-        var esDivisible = true
-
-        if (boxDivisibleDos.isChecked) {
-
-            esDivisible = esDivisible(2)
-            if (!esDivisible) return false
-
-        } else if (boxDivisibleTres.isChecked) {
-
-            esDivisible = esDivisible(3)
-            if (!esDivisible) return false
-
-        } else if (boxDivisibleCinco.isChecked) {
-
-            esDivisible = esDivisible(5)
-            if (!esDivisible) return false
-
-        } else if (boxDivisibleDiez.isChecked) {
-
-            esDivisible = esDivisible(10)
-            if (!esDivisible) return false
-
-        } else if (boxNoDivisible.isChecked) {
-
-            var res = textVisualizaNumAleatorio.text.toString().toInt()
-            if (res % 2 != 0 &&
-                res % 3 != 0 &&
-                res % 4 != 0 &&
-                res % 10 != 0
-            ) {
-                return true
-            } else {
-                return false
-            }
-
+       val listOfSeleccionados= mutableListOf<Int>()
+        if(boxDivisibleDos.isChecked){
+            listOfSeleccionados.add(2)
         }
-        return esDivisible
+        if(boxDivisibleTres.isChecked){
+            listOfSeleccionados.add(3)
+        }
+        if(boxDivisibleCinco.isChecked){
+            listOfSeleccionados.add(5)
+        }
+        if(boxDivisibleDiez.isChecked){
+            listOfSeleccionados.add(10)
+        }
+        val listofDivisibles=todosDivisibles(num)
+
+        return listOfSeleccionados==listofDivisibles
+    }
+
+    fun todosDivisibles(num: Int): List<Int> {
+        val listOfPosibles = listOf(2, 3, 5, 10)
+        val listofDivisibles = mutableListOf<Int>()
+        listOfPosibles.forEach { posible ->
+            if (num % posible == 0) {
+                listofDivisibles.add(posible)
+            }
+        }
+        return listofDivisibles
     }
 
     fun esDivisible(num: Int): Boolean {
-        var res = textVisualizaNumAleatorio.text.toString().toInt() % num
-
-        if (res == 0) {
-            return true
-        }
-        return false
+        val res = textVisualizaNumAleatorio.text.toString().toInt() % num
+        return res == 0
     }
 
     fun algunaOpcionSeleccionada(): Boolean {

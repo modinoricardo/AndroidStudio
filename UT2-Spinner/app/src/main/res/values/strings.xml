@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">UT2-Spinner</string>
+    <string-array name="temas">
+        <item>Serie</item>
+        <item>Grupo música</item>
+        <item>Anime</item>
+    </string-array>
+
+    <string-array name="series">
+        <item>Castle</item>
+        <item>El mentalista</item>
+        <item>Lucifer</item>
+    </string-array>
+    <string-array name="gruposMusica">
+        <item>Imagine Dragons</item>
+        <item>The Beatles</item>
+        <item>AC/DC</item>
+    </string-array>
+    <string-array name="anime">
+        <item>Boku no hero</item>
+        <item>Kimetsu no yaiba</item>
+        <item>Nanatsu no taizai</item>
+    </string-array>
+</resources>

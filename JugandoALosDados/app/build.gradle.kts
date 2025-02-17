@@ -7,6 +7,10 @@ android {
     namespace = "com.example.jugandoalosdados"
     compileSdk = 35
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     defaultConfig {
         applicationId = "com.example.jugandoalosdados"
         minSdk = 26
@@ -32,9 +36,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
-    }
-    buildFeatures {
-        viewBinding = true
     }
 }
 

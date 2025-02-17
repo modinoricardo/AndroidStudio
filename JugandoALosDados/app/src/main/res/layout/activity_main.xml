@@ -58,14 +58,14 @@
                 app:singleSelection="true">
 
                 <Button
-                    android:id="@+id/button1"
+                    android:id="@+id/parImparButton"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Par/Impar" />
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/mayorMenorButton"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
         </LinearLayout>
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/miSpinner"
             android:layout_width="match_parent"
             android:layout_height="200px"
             android:layout_margin="20dp" />
@@ -94,7 +94,7 @@
             android:layout_height="wrap_content">
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/buttonLanzarDados"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

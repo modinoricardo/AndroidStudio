@@ -39,7 +39,7 @@
                 android:textSize="30sp" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/textSaldo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -54,7 +54,8 @@
             <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/toggleButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:singleSelection="true">
 
                 <Button
                     android:id="@+id/button1"
@@ -79,12 +80,13 @@
             android:layout_margin="20dp" />
 
         <EditText
-            android:id="@+id/editTextNumber"
+            android:id="@+id/editTextNumberApuesta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:ems="10"
-            android:inputType="number" />
+            android:inputType="number"
+            android:hint="Haga su apuesta" />
 
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/toggleButton2"

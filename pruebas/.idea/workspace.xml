@@ -16,7 +16,13 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2163388b-a157-4b36-b63d-1bd84d511dd3" name="Changes" comment="" />
+    <list default="true" id="2163388b-a157-4b36-b63d-1bd84d511dd3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../CicloVida/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../CicloVida/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../JugandoALosDados/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../JugandoALosDados/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../PruebaMensajes/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../PruebaMensajes/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,16 +31,19 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=PhysicalDevice, isTemplate=false, identifier=serial=8xcmr8t8gazp895l)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=/home/ricardo/.android/avd/Pixel_9_API_35.avd)]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 2
-}]]></component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="2slaeJquubSLqg1JYpCRzPG3V1F" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -48,7 +57,9 @@
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "kotlin-language-version-configured": "true"
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/ricardo/Escritorio/DAMDAW2/AndroidStudio/JugandoALosDados"
   }
 }]]></component>
   <component name="RunManager">
@@ -140,12 +151,12 @@
       <map>
         <entry key="com.example.pruebas">
           <value>
-            <CheckInfo lastCheckTimestamp="1739032723639" />
+            <CheckInfo lastCheckTimestamp="1739792534265" />
           </value>
         </entry>
         <entry key="com.example.pruebas.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1739032723638" />
+            <CheckInfo lastCheckTimestamp="1739792534265" />
           </value>
         </entry>
       </map>

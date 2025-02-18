@@ -51,9 +51,17 @@
 
         }
 
+        private fun validaLanzarDados(): Boolean {
+            return binding.parImparButton.isActivated && binding.miSpinner.isActivated
+        }
+
         private fun lanzarDados() {
-            var valorBoton = if (parImparButton.isChecked())
-            var valorSpinner = binding.miSpinner.selectedItem
+            if(!validaLanzarDados()){
+
+            }else{
+
+            }
+
         }
 
         private fun botonParSeleccionado(par: Boolean) {

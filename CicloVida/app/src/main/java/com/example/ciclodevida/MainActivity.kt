@@ -3,13 +3,16 @@ package com.example.ciclodevida
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.ciclodevida.databinding.ActivityMainBinding
+import com.example.ciclodevida.viewModel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
+    private val myViewModel:MainViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
     var numClicks = 0
 
@@ -28,16 +31,25 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         binding.textView.text = "0"
-        binding.button.setOnClickListener({
-            binding.textView.text = (binding.textView.text.toString().toInt() +
-                    binding.editTextNumber.text.toString().toInt()).toString()
-                numClicks++
-                if(numClicks==5){
-                    Toast.makeText(this, "Hemos llegado a 5 clicks", Toast.LENGTH_SHORT).show()
-                    numClicks=0
-                }
+//        binding.button.setOnClickListener({
+//            binding.textView.text = (binding.textView.text.toString().toInt() +
+//                    binding.editTextNumber.text.toString().toInt()).toString()
+//                numClicks++
+//                if(numClicks==5){
+//                    Toast.makeText(this, "Hemos llegado a 5 clicks", Toast.LENGTH_SHORT).show()
+//                    numClicks=0
+//                }
+//
+//        })
 
+        binding.button.setOnClickListener({
+            myViewModel.sumar(binding.editTextNumber.text)
         })
+
+        myViewModel.datos.observe(this){
+            binding.textView.text
+        }
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

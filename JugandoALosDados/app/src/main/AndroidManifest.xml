@@ -13,6 +13,14 @@
         android:theme="@style/Theme.JugandoALosDados"
         tools:targetApi="31">
         <activity
+            android:name=".SegundaActivity"
+            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".BancaRotaActivity"-->
+<!--            android:exported="false"-->
+<!--            android:label="@string/title_activity_banca_rota"-->
+<!--            android:theme="@style/Theme.JugandoALosDados" />-->
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

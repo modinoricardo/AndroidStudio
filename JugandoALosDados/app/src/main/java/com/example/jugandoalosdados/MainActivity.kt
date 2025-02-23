@@ -1,10 +1,12 @@
     package com.example.jugandoalosdados
 
-    import android.annotation.SuppressLint
+    import android.content.DialogInterface
+    import android.content.Intent
     import android.os.Bundle
     import android.view.View
     import android.widget.ArrayAdapter
     import androidx.activity.enableEdgeToEdge
+    import androidx.appcompat.app.AlertDialog
     import androidx.appcompat.app.AppCompatActivity
     import androidx.core.view.ViewCompat
     import androidx.core.view.WindowInsetsCompat
@@ -14,7 +16,6 @@
     import com.google.android.material.snackbar.Snackbar
     import kotlinx.coroutines.delay
     import kotlinx.coroutines.launch
-    import kotlin.random.Random
 
     class MainActivity : AppCompatActivity() {
 
@@ -25,6 +26,7 @@
         var listMayorMenorSeven = listOf("Mayor o igual que 7","Menor que 7")
         var dado1:Int = 0
         var dado2:Int = 0
+        var partidaGanada = false
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -81,7 +83,6 @@
             }
         }
 
-        @SuppressLint("SetTextI18n")
         private suspend fun lanzarDados() {
             limpiarVista()
 
@@ -103,8 +104,37 @@
                     mayorMenor7()
                 }
 
+                delay(1000)
+                seguirJugando()
+
             }
         }
+
+        private fun seguirJugando() {
+            mensajeAlerta()
+        }
+
+        private fun mensajeAlerta() {
+            val titulo = "Jugando a los Dados"
+            val mensaje = "¿Desea seguir jugando?"
+            val myAlert = AlertDialog.Builder(this)
+
+            myAlert.setTitle(titulo)
+            var menAviso = "Por si no te habias dado cuenta has"
+            if(partidaGanada)myAlert.setMessage("$mensaje\n\n$menAviso ganado esta ronda ;) \n ¿Subimos la apuesta?")
+            else myAlert.setMessage("$mensaje\n" +
+                    "\n$menAviso perdido esta ronda :(")
+
+            myAlert.setPositiveButton("Salir del juego", DialogInterface.OnClickListener({
+                    _, _->this.finish()
+            }))
+            myAlert.setNegativeButton("Seguir jugando", DialogInterface.OnClickListener({
+                    _, _->
+            }))
+
+            myAlert.create().show()
+        }
+
 
         private fun limpiarVista() {
             binding.imageViewRespuesta.visibility = View.INVISIBLE
@@ -114,7 +144,7 @@
 
         private fun menor7() = (dado1 + dado2)<7
         private fun mayorIgual7() = (dado1 + dado2)>=7
-        
+
         private fun mayorMenor7() {
             var gano = false
             when(binding.miSpinner.selectedItemPosition){
@@ -156,6 +186,7 @@
             binding.textSaldo.text= saldo.toString()
             binding.imageViewRespuesta.visibility = View.VISIBLE
             binding.imageViewRespuesta.setImageResource(R.drawable.win)
+            partidaGanada = true
         }
 
         private fun partidaPerdida(){
@@ -164,6 +195,14 @@
             binding.textSaldo.text= saldo.toString()
             binding.imageViewRespuesta.visibility = View.VISIBLE
             binding.imageViewRespuesta.setImageResource(R.drawable.youlose)
+            partidaGanada = false
+
+            if (saldo==0){
+                val intent = Intent(this, SegundaActivity::class.java)
+                startActivity(intent)
+                this.finish()
+            }
+
         }
 
     }

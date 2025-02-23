@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">JugandoALosDados</string>
+    <string name="title_activity_banca_rota">BancaRotaActivity</string>
 </resources>

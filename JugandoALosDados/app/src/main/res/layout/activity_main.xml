@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:textColor="@color/white"
+                android:textColor="#ff6750a4"
                 android:textSize="30sp" />
 
             <TextView
@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:textColor="@color/white"
+                android:textColor="#ff6750a4"
                 android:textSize="30sp" />
         </LinearLayout>
 
@@ -143,8 +143,8 @@
             android:layout_height="wrap_content">
 
             <Button
-                android:id="@+id/buttonLanzarDados"
                 style="?attr/materialButtonOutlinedStyle"
+                android:id="@+id/buttonLanzarDados"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"

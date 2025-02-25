@@ -2,5 +2,6 @@
 <resources>
     <color name="black">#000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="red">#b01c1c</color>
+    <color name="moradoDay">#7e00d1</color>
+    <color name="moradoNight">#6200a1</color>
 </resources>

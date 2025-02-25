@@ -2,7 +2,16 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.JugandoALosDados" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-         <item name="colorPrimary">#6430bf</item>
+
+        <item name="colorPrimary">@color/moradoDay</item>
+    </style>
+
+    <style name="Base.Theme.JugandoALosDadosTexto" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:textColor">@color/moradoDay</item>
+    </style>
+
+    <style name="Base.Theme.JugandoALosDadosFondo" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:background">@color/moradoDay</item>
     </style>
 
     <style name="Theme.JugandoALosDados" parent="Base.Theme.JugandoALosDados" />

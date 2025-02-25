@@ -3,5 +3,14 @@
     <style name="Base.Theme.JugandoALosDados" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/moradoNight</item>
+    </style>
+
+    <style name="Base.Theme.JugandoALosDadosTexto" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:textColor">@color/moradoNight</item>
+    </style>
+
+    <style name="Base.Theme.JugandoALosDadosFondo" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:background">@color/moradoNight</item>
     </style>
 </resources>

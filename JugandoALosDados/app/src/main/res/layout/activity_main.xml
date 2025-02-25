@@ -22,19 +22,19 @@
             android:orientation="horizontal">
 
             <TextView
+                style="@style/Base.Theme.JugandoALosDadosTexto"
                 android:id="@+id/textViewApuestaUno"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:textColor="#ff6750a4"
                 android:textSize="30sp" />
 
             <TextView
+                style="@style/Base.Theme.JugandoALosDadosTexto"
                 android:id="@+id/textViewApuestaDos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:textColor="#ff6750a4"
                 android:textSize="30sp" />
         </LinearLayout>
 
@@ -61,10 +61,10 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
+            style="@style/Base.Theme.JugandoALosDadosFondo"
             android:id="@+id/toolbar2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:title="Dados"

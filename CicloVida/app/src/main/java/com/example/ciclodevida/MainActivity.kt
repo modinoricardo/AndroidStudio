@@ -7,8 +7,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.ciclodevida.databinding.ActivityMainBinding
 import com.example.ciclodevida.viewModel.MainViewModel
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,13 +46,26 @@ class MainActivity : AppCompatActivity() {
 //
 //        })
 
-        binding.button.setOnClickListener({
-            myViewModel.sumar(binding.editTextNumber.text)
-        })
-
-        myViewModel.datos.observe(this){
-            binding.textView.text
+        lifecycleScope.launch{
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                myViewModel.datos.collect{
+                    binding.textView.text = it.contador.toString()
+                    numClicks = it.numClicks
+                    if(it.mostrarMensaje == true){
+                        Toast.makeText(applicationContext,"Has llegado a 5 clicks",
+                        Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
+
+//        binding.button.setOnClickListener({
+//            myViewModel.sumar(binding.editTextNumber.text)
+//        })
+//
+//        myViewModel.datos.observe(this){
+//            binding.textView.text
+//        }
 
     }
 

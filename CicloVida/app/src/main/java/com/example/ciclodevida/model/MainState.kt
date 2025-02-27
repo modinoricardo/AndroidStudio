@@ -12,4 +12,8 @@ class MainState {
 
         return datos
     }
+
+//    fun restar(datResta:Int, misDatos: Datos):Datos{
+//        misDatos
+//    }
 }

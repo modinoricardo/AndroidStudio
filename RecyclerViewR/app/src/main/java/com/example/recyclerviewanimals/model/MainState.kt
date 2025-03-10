@@ -6,4 +6,10 @@ class MainState {
     fun devuelveArray():List<String>{
         return animalesName
     }
+
+    fun delete(data:Int):MyData{
+        animalesName.removeAt(data)
+        return MyData(data, animalesName)
+    }
+
 }

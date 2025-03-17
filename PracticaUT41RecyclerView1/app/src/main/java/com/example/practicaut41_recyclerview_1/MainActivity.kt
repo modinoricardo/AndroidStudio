@@ -1,6 +1,7 @@
 package com.example.practicaut41_recyclerview_1
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.practicaut41_recyclerview_1.databinding.ActivityMainBinding
 import com.example.practicaut41_recyclerview_1.viewModel.MainViewModel
 
@@ -40,6 +42,21 @@ class MainActivity : AppCompatActivity() {
                     )
                 rvColores.addItemDecoration(miDividerItemDeclaration)
             }
+
+            botonDelete.setOnClickListener{
+                if(myAdapter.clickPosition < 0){
+                    Toast.makeText(application, "Debe seleccionar una fila", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                myViewModel.delete(myAdapter.clickPosition)
+            }
+
+            myViewModel.delete.observe(this@MainActivity){
+                myAdapter.notifyItemRemoved(it.position)
+                myAdapter.clickPosition = RecyclerView.NO_POSITION
+                myAdapter.notifyItemRangeChanged(0, it.listaColores.size)
+            }
+
         }
 
     }

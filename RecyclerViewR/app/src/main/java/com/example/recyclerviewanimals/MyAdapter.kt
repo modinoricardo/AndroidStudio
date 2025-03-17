@@ -25,7 +25,6 @@ class MyAdapter(private val dataSet: List<String>) : RecyclerView.Adapter<MyView
         }else {
             holder.tvAnimales.setTextColor(Color.BLACK)
             holder.tvAnimales.setBackgroundColor(Color.TRANSPARENT)
-
         }
 
         holder.tvAnimales.setOnClickListener{

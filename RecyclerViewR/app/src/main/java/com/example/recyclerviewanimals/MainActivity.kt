@@ -55,6 +55,21 @@ class MainActivity : AppCompatActivity() {
                     myAdapter.clickPosition = RecyclerView.NO_POSITION
                     myAdapter.notifyItemRangeChanged(0, it.animales.size)
                 }
+
+            button2.setOnClickListener{
+                var position = myAdapter.clickPosition
+                if(position<0){
+                    position =0
+                }
+                myViewModel.anyadir(position, texto.text.toString())
+            }
+
+            myViewModel.anyadir.observe(this@MainActivity){
+                myAdapter.notifyItemRemoved(it.position)
+                myAdapter.clickPosition = RecyclerView.NO_POSITION
+                myAdapter.notifyItemRangeChanged(0, it.animales.size)
+            }
+
         }
     }
 }

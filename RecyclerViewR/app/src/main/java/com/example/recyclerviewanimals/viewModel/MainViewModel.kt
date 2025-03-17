@@ -16,6 +16,9 @@ class MainViewModel : ViewModel() {
     private val _delete: MutableLiveData<MyData> = MutableLiveData<MyData>(MyData(0, emptyList<String>()))
     val delete: LiveData<MyData> get() = _delete
 
+    private val _anyadir: MutableLiveData<MyData> = MutableLiveData<MyData>(MyData(0, emptyList<String>()))
+    val anyadir: LiveData<MyData> get() = _anyadir
+
     fun devuelveArray(){
         viewModelScope.launch {
             var retornoDatos=myEstado.devuelveArray()
@@ -26,6 +29,12 @@ class MainViewModel : ViewModel() {
     fun delete(myData: Int){
         viewModelScope.launch {
             _delete.value = myEstado.delete(myData)
+        }
+    }
+
+    fun anyadir(position:Int, name:String){
+        viewModelScope.launch {
+            _anyadir.value = myEstado.anyadir(position, name)
         }
     }
 

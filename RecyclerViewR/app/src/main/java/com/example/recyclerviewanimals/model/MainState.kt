@@ -12,4 +12,15 @@ class MainState {
         return MyData(data, animalesName)
     }
 
+    fun anyadir(position:Int, nombre:String):MyData{
+        if(position==null){
+            animalesName.add(0, nombre)
+        }else{
+            animalesName.add(position, nombre)
+        }
+
+        return MyData(position, animalesName)
+
+    }
+
 }

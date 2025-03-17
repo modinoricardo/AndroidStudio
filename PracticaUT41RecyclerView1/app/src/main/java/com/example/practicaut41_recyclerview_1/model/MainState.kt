@@ -30,4 +30,14 @@ class MainState {
         }
     }
 
+    fun delete(data:Int):MyData{
+        colores.removeAt(data)
+        return MyData(data, colores)
+    }
+
+    fun anyadir(position:Int, color:ColorR):MyData{
+        colores.add(position, color)
+        return MyData(position, colores)
+    }
+
 }

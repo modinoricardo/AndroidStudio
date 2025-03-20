@@ -34,9 +34,9 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun anyadir(position:Int, name:String){
+    fun anyadir(position:Int, colores:ColorR){
         viewModelScope.launch {
-            _anyadir.value = myEstado.anyadir(position, name)
+            _anyadir.value = myEstado.anyadir(position, colores)
         }
     }
 

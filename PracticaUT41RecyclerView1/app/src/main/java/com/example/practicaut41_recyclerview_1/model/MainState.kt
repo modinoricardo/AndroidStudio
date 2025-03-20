@@ -1,6 +1,6 @@
 package com.example.practicaut41_recyclerview_1.model
 
-class ColorR(val nombre:String, val codigo:String)
+class ColorR(var nombre:String, var codigo:String)
 
 private var colores:MutableList<ColorR> = mutableListOf()
 

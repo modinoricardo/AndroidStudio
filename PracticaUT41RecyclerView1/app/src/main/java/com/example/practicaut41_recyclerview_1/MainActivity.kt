@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity() {
                 myAdapter.notifyItemRemoved(it.position)
                 myAdapter.clickPosition = RecyclerView.NO_POSITION
                 myAdapter.notifyItemRangeChanged(0, it.listaColores.size)
+                rvColores.scheduleLayoutAnimation()
             }
 
             botonAnyadir.setOnClickListener{
@@ -79,6 +80,7 @@ class MainActivity : AppCompatActivity() {
                 myAdapter.notifyItemRemoved(it.position)
                 myAdapter.clickPosition = RecyclerView.NO_POSITION
                 myAdapter.notifyItemRangeChanged(0, it.listaColores.size)
+                rvColores.scheduleLayoutAnimation()
             }
 
         }

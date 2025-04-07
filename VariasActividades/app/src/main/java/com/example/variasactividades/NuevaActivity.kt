@@ -1,15 +1,10 @@
 package com.example.variasactividades
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -27,7 +22,6 @@ class NuevaActivity : AppCompatActivity() {
 
         var myExtra : Bundle? = intent.extras
         var myMessage = myExtra!!.getString("texto")
-
 
         findViewById<Button>(R.id.button).setOnClickListener{
             val myResult = Intent()

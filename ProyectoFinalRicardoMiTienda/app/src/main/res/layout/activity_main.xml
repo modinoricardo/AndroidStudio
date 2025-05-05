@@ -63,11 +63,18 @@
             android:inputType="text"
             android:hint="Contraseña" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
         <Button
             android:id="@+id/buttonStarSesion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Iniciar sesión" />
+            android:text="Iniciar sesión"
+            android:backgroundTint="#C19065"
+            android:textColor="#FFFFFF"
+            android:padding="12dp"/>
 
     </LinearLayout>
 

@@ -14,7 +14,6 @@ import com.example.proyectofinalricardomitienda.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    lateinit var myActivityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,18 +26,18 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         with(binding){
-
-            myActivityResultLauncher = registerForActivityResult(
-                ActivityResultContracts.StartActivityForResult()){
-                   result ->
-                        if (result.resultCode == RESULT_OK) {
-                            val data = result.data
-                        }
-            }
+//
+//            myActivityResultLauncher = registerForActivityResult(
+//                ActivityResultContracts.StartActivityForResult()){
+//                   result ->
+//                        if (result.resultCode == RESULT_OK) {
+//                            val data = result.data
+//                        }
+//            }
 
             buttonStarSesion.setOnClickListener{
                 val myIntent = Intent(this@MainActivity, PaginaPrincipal::class.java)
-                myActivityResultLauncher.launch(myIntent)
+                startActivity(myIntent)
             }
         }
     }

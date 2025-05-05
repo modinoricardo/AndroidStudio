@@ -1,34 +1,33 @@
 package com.example.proyectofinalricardomitienda
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
-import android.webkit.WebViewClient
-import android.widget.Toast
-import com.example.proyectofinalricardomitienda.databinding.ActivityPaginaPrincipalBinding
-import com.example.proyectofinalricardomitienda.databinding.FragmentWebBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val url = "url"
+//private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
  * Use the [WebFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+val URL: String?=null
 class WebFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var _binding: FragmentWebBinding? = null
-    private val binding get() = _binding!!
-
+    private var urlparam: String? = null
 //    private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+            urlparam = it.getString(URL)
 //            param2 = it.getString(ARG_PARAM2)
         }
     }
@@ -37,28 +36,13 @@ class WebFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentWebBinding.inflate(inflater,container,false)
-
-        return binding.root
+        val myView = inflater.inflate(R.layout.fragment_web, container, false)
+        val myWebView = myView.findViewById<WebView>(R.id.myWebView)
+        myWebView.loadUrl(urlparam!!)
+        Log.i("web",urlparam!!)
+        return myView
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.myWebView.settings.javaScriptEnabled = true
-        binding.myWebView.webViewClient = WebViewClient()
-
-        try {
-            binding.myWebView.loadUrl("http://10.0.2.2:8000")
-        }catch (e: Exception){
-            Toast.makeText(context,"Ha FALLADO",Toast.LENGTH_SHORT).show()
-        }
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -73,7 +57,7 @@ class WebFragment : Fragment() {
         fun newInstance(url: String) =
             WebFragment().apply {
                 arguments = Bundle().apply {
-                    putString(url, url)
+                    putString(URL, url)
 //                    putString(ARG_PARAM2, param2)
                 }
             }

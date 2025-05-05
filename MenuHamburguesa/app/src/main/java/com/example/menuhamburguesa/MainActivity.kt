@@ -19,10 +19,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private lateinit var binding: ActivityMainBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    lateinit var myMaterialToolbar: MaterialToolbar
+    lateinit var myNavegationView: NavigationView
 
-        lateinit var myMaterialToolbar: MaterialToolbar
-        lateinit var myNavegationView: NavigationView
+    override fun onCreate(savedInstanceState: Bundle?) {
 
             super.onCreate(savedInstanceState)
             binding = ActivityMainBinding.inflate(layoutInflater)

@@ -1,9 +1,9 @@
 package com.example.proyectofinalricardomitienda.entities
 
-data class Categoria(
+data class CartProduct (
     val id: Long,
     val name: String,
-    val description: String,
-    val imageUrl: String?
+    val quantity: Int,
+    val price: Double,
+    val totalPrice: Double
 )
-

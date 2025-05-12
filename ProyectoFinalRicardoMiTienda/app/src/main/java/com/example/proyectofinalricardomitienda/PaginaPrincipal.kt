@@ -52,18 +52,17 @@ class PaginaPrincipal : AppCompatActivity(), NavigationView.OnNavigationItemSele
                         .commit()
 
                     main.closeDrawer(GravityCompat.START)
-                }
-
-                if(it.itemId == R.id.id_productos){
+                }else if(it.itemId == R.id.id_productos){
                     val myFragmentManager : FragmentManager = supportFragmentManager
                     val myFragmentTransaction: FragmentTransaction = myFragmentManager.beginTransaction()
-                    val myFragment: WebFragment = WebFragment.newInstance(Util.URL)
+                    val myFragment: ProductFragment = ProductFragment.newInstance()
 
-                    myFragmentTransaction.replace(R.id.myLinearL, myFragment)
+                    myFragmentTransaction
+                        .replace(R.id.myLinearL, myFragment)
                         .commit()
-
                     main.closeDrawer(GravityCompat.START)
                 }
+
                 true
             }
 

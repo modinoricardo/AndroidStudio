@@ -47,25 +47,28 @@ class ProductDetailActivity : AppCompatActivity() {
         productPrice = intent.getDoubleExtra("product_price", 0.0)
         productImageUrl = intent.getStringExtra("product_image") ?: ""
 
-        with(binding) {
-            txtDetailProductName.text = productName
-            txtDetailProductCategory.text = productCategoryName
+        with(binding){
+            txtDetailProductName.text        = productName
+            txtDetailProductCategory.text    = productCategoryName
             txtDetailProductDescription.text = productDescription
-            txtDetailProductPrice.text = productPrice.toString()
+            txtDetailProductPrice.text       = productPrice.toString()
 
-            Glide.with(this@ProductDetailActivity).load(productImageUrl).into(imgDetailProduct)
+            Glide.with(this@ProductDetailActivity)
+                .load(productImageUrl)
+                .into(imgDetailProduct)
 
+            // Cantidad inicial
             txtQuantity.text = "1"
 
             btnIncrement.setOnClickListener {
-                val currentQuantity = txtQuantity.text.toString().toInt()
-                txtQuantity.text = (currentQuantity + 1).toString()
+                val current = txtQuantity.text.toString().toInt()
+                txtQuantity.text = (current + 1).toString()
             }
 
             btnDecrement.setOnClickListener {
-                val currentQuantity = txtQuantity.text.toString().toInt()
-                if (currentQuantity > 1) {
-                    txtQuantity.text = (currentQuantity - 1).toString()
+                val current = txtQuantity.text.toString().toInt()
+                if (current > 1) {
+                    txtQuantity.text = (current - 1).toString()
                 }
             }
 
@@ -79,15 +82,62 @@ class ProductDetailActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.cartError.observe(this) { result ->
-            //Si el mensaje de error es != null mostrar carrito
-            if (result == null) {
-                Toast.makeText(this, "Producto añadido al carrito", Toast.LENGTH_SHORT).show()
-                finish()
-            } else {
-                Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+        // --- Observadores separados ---
+
+        // Éxito al añadir al carrito: cerramos detalle
+        viewModel.addToCartResult.observe(this) {
+            Toast.makeText(this, "Producto añadido al carrito", Toast.LENGTH_SHORT).show()
+            finish()
+        }
+
+        // Error al añadir al carrito: solo mostramos mensaje
+        viewModel.cartError.observe(this) { errorMsg ->
+            errorMsg?.let {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
-    }
+        }
+
+//        with(binding) {
+//            txtDetailProductName.text = productName
+//            txtDetailProductCategory.text = productCategoryName
+//            txtDetailProductDescription.text = productDescription
+//            txtDetailProductPrice.text = productPrice.toString()
+//
+//            Glide.with(this@ProductDetailActivity).load(productImageUrl).into(imgDetailProduct)
+//
+//            txtQuantity.text = "1"
+//
+//            btnIncrement.setOnClickListener {
+//                val currentQuantity = txtQuantity.text.toString().toInt()
+//                txtQuantity.text = (currentQuantity + 1).toString()
+//            }
+//
+//            btnDecrement.setOnClickListener {
+//                val currentQuantity = txtQuantity.text.toString().toInt()
+//                if (currentQuantity > 1) {
+//                    txtQuantity.text = (currentQuantity - 1).toString()
+//                }
+//            }
+//
+//            btnAddToCart.setOnClickListener {
+//                val quantity = txtQuantity.text.toString().toInt()
+//                viewModel.addProductToCart(productId, quantity)
+//            }
+//
+//            btnBack.setOnClickListener {
+//                finish()
+//            }
+//        }
+
+//        viewModel.cartError.observe(this) { result ->
+//            //Si el mensaje de error es != null mostrar carrito
+//            if (result == null) {
+//                Toast.makeText(this, "Producto añadido al carrito", Toast.LENGTH_SHORT).show()
+//                finish()
+//            } else {
+//                Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+//            }
+//        }
 
 }

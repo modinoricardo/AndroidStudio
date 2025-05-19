@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".ProductDetailActivity">
+    tools:context=".activity.ProductDetailActivity">
 
     <ImageButton
         android:id="@+id/btnBack"
@@ -139,9 +139,10 @@
 
                 <Button
                     android:id="@+id/btnDecrement"
-                    android:layout_width="48dp"
+                    android:layout_width="62dp"
                     android:layout_height="48dp"
                     android:text="-"
+                    android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
                 <TextView
@@ -154,7 +155,7 @@
 
                 <Button
                     android:id="@+id/btnIncrement"
-                    android:layout_width="48dp"
+                    android:layout_width="64dp"
                     android:layout_height="48dp"
                     android:text="+"
                     android:textSize="18sp" />

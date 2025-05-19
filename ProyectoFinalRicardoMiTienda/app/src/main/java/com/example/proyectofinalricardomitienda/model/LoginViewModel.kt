@@ -1,12 +1,10 @@
-package com.example.proyectofinalricardomitienda
+package com.example.proyectofinalricardomitienda.model
 
-import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.proyectofinalricardomitienda.entities.TokenResponse
-import com.example.proyectofinalricardomitienda.model.MainState
+import com.example.proyectofinalricardomitienda.state.MainState
 import kotlinx.coroutines.launch
 
 class LoginViewModel : ViewModel(){

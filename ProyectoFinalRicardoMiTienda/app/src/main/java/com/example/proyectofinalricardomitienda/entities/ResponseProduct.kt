@@ -1,11 +1,8 @@
-package com.example.proyectofinalricardomitienda
-
-import com.example.proyectofinalricardomitienda.entities.Pageable
-import com.example.proyectofinalricardomitienda.entities.Product
-import com.example.proyectofinalricardomitienda.entities.Sort
+package com.example.proyectofinalricardomitienda.entities
 
 data class ResponseProduct(
-    val content: List<Product> = emptyList(),
+    val content: MutableList<Product> = mutableListOf(),
+//    val content: List<Product> = emptyList(),
     val pageable: Pageable = Pageable(),
     val last: Boolean = false,
     val totalElements: Int = 0,

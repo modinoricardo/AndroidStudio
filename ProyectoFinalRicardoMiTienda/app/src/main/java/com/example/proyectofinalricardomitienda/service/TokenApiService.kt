@@ -1,4 +1,4 @@
-package com.example.proyectofinalricardomitienda
+package com.example.proyectofinalricardomitienda.service
 
 import com.example.proyectofinalricardomitienda.entities.LoginRequest
 import com.example.proyectofinalricardomitienda.entities.TokenResponse

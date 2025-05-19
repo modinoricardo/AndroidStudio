@@ -1,9 +1,10 @@
-package com.example.proyectofinalricardomitienda
+package com.example.proyectofinalricardomitienda.view
 
 import android.view.View
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.proyectofinalricardomitienda.R
 
 class ShoppingCartView (itemView: View): RecyclerView.ViewHolder(itemView) {
     val labelSCPrice= itemView.findViewById<View>(R.id.labelSCPrice) as TextView

@@ -1,4 +1,4 @@
-package com.example.proyectofinalricardomitienda
+package com.example.proyectofinalricardomitienda.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.proyectofinalricardomitienda.databinding.ActivityMainBinding
 import android.widget.Toast
+import com.example.proyectofinalricardomitienda.model.LoginViewModel
+import com.example.proyectofinalricardomitienda.R
+import com.example.proyectofinalricardomitienda.util.Util
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,37 +27,34 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        loginViewModel.code.observe(this@MainActivity) {
-            Log.i("accessToken", loginViewModel.code.value!!.toString())
-            if (loginViewModel.code.value == 200) {
-                val myIntent = Intent(this@MainActivity, PaginaPrincipal::class.java)
-                startActivity(myIntent)
-            }else{
-                Toast.makeText(this,
-                    "Usuario o contraseña incorrectos",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
 
         with(binding) {
-//
-//            myActivityResultLauncher = registerForActivityResult(
-//                ActivityResultContracts.StartActivityForResult()){
-//                   result ->
-//                        if (result.resultCode == RESULT_OK) {
-//                            val data = result.data
-//                        }
-//            }
+            loginViewModel.code.observe(this@MainActivity) {
+                Log.i("accessToken", loginViewModel.code.value!!.toString())
+                if (loginViewModel.code.value == 200) {
+                    val myIntent = Intent(this@MainActivity, PaginaPrincipal::class.java)
 
+                    Util.username = editTextTextUser.text.toString()
+                    Util.password = editTextTextPassword.text.toString()
+
+                    startActivity(myIntent)
+                    finish()
+                } else {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Usuario o contraseña incorrectos",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    editTextTextUser.setText("")
+                    editTextTextPassword.setText("")
+                }
+            }
 
             buttonStarSesion.setOnClickListener {
                 val user = editTextTextUser.text.toString()
                 val password = editTextTextPassword.text.toString()
 
-                loginViewModel.login(user, password)
-
-
+                loginViewModel.login(user,password)
             }
         }
     }

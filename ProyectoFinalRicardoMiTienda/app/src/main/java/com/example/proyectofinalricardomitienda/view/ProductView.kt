@@ -1,10 +1,11 @@
-package com.example.proyectofinalricardomitienda
+package com.example.proyectofinalricardomitienda.view
 
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.proyectofinalricardomitienda.R
 
 class ProductView (itemView: View): RecyclerView.ViewHolder(itemView) {
     val productImage= itemView.findViewById<View>(R.id.productImage) as ImageView

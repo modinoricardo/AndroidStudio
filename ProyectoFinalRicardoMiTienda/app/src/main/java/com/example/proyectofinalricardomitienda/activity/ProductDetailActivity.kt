@@ -1,4 +1,4 @@
-package com.example.proyectofinalricardomitienda
+package com.example.proyectofinalricardomitienda.activity
 
 import android.os.Bundle
 import android.widget.Toast
@@ -8,18 +8,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
+import com.example.proyectofinalricardomitienda.R
 import com.example.proyectofinalricardomitienda.databinding.ActivityProductDetailBinding
+import com.example.proyectofinalricardomitienda.model.ShoppingCartViewModel
 
 class ProductDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProductDetailBinding
     private val viewModel: ShoppingCartViewModel by viewModels()
+
     private var productId: Long = 0
+    private var productCategoryName: String = ""
     private var productName: String = ""
     private var productDescription: String = ""
-    private var productImage: String = ""
+    private var productDetail: String = ""
+    private var productStock: Int = 0
     private var productPrice: Double = 0.0
-    private var productCategory: Int = 0
+    private var productImageUrl: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,27 +39,21 @@ class ProductDetailActivity : AppCompatActivity() {
         }
 
         productId = intent.getLongExtra("product_id", 0)
+        productCategoryName = intent.getStringExtra("product_category") ?: ""
         productName = intent.getStringExtra("product_name") ?: ""
         productDescription = intent.getStringExtra("product_description") ?: ""
-        productImage = intent.getStringExtra("product_image") ?: ""
+        productDetail = intent.getStringExtra("product_detail") ?: ""
+        productStock = intent.getIntExtra("product_stock", 0)
         productPrice = intent.getDoubleExtra("product_price", 0.0)
-        productCategory = intent.getIntExtra("product_category", 0)
+        productImageUrl = intent.getStringExtra("product_image") ?: ""
 
         with(binding) {
             txtDetailProductName.text = productName
+            txtDetailProductCategory.text = productCategoryName
             txtDetailProductDescription.text = productDescription
             txtDetailProductPrice.text = productPrice.toString()
 
-            Glide.with(this@ProductDetailActivity)
-                .load(productImage)
-                .into(imgDetailProduct)
-
-            when (productCategory) {
-                1 -> txtDetailProductCategory.text = "Carta"
-                2 -> txtDetailProductCategory.text = "Sobre"
-                3 -> txtDetailProductCategory.text = "Caja"
-                else -> txtDetailProductCategory.text = "Otro"
-            }
+            Glide.with(this@ProductDetailActivity).load(productImageUrl).into(imgDetailProduct)
 
             txtQuantity.text = "1"
 
@@ -80,12 +79,13 @@ class ProductDetailActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.addToCartResult.observe(this) { result ->
-            if (result != null) {
+        viewModel.cartError.observe(this) { result ->
+            //Si el mensaje de error es != null mostrar carrito
+            if (result == null) {
                 Toast.makeText(this, "Producto añadido al carrito", Toast.LENGTH_SHORT).show()
                 finish()
             } else {
-                Toast.makeText(this, "Stock insuficiente", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
             }
         }
     }

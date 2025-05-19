@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ShoppingCartFragment">
+    tools:context=".fragment.ShoppingCartFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvShoppingCart"
         android:layout_width="match_parent"
         android:layout_height="600dp"
+        android:background="#3F51B5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -75,6 +76,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Eliminar" />
+
+        <Button
+            android:id="@+id/btnDeleteAll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Limpiar Carrito" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,6 +32,8 @@ class ProductFragment : Fragment() , AdapterView.OnItemSelectedListener{
     private var paginaActual:Int = 1
     private var tamanio:Int = 5
 
+    private var busqueda:Boolean = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,8 +56,12 @@ class ProductFragment : Fragment() , AdapterView.OnItemSelectedListener{
 
         viewModel.productos.observe(viewLifecycleOwner) { productList ->
             productList?.let {
-                val lista = it.content
-                adapter.updateListProduct(lista)
+                if(busqueda) {
+                    adapter = ProductAdapter()
+                    binding.rvProducts.adapter = adapter
+                }
+                    val lista = it.content
+                    adapter.updateListProduct(lista)
             }
         }
 
@@ -79,6 +85,7 @@ class ProductFragment : Fragment() , AdapterView.OnItemSelectedListener{
 
         // Botón de búsqueda
         binding.btnPSearch.setOnClickListener {
+            busqueda = true
             textoSeleccionado = binding.txtPSearch.text.toString().takeIf { it.isNotBlank() }
 //            categoriaSeleccionada = binding.spinnerPCategory.selectedItemPosition.takeIf { it > 0 }?.toLong()
             viewModel.cargarProductos(textoSeleccionado, categoriaSeleccionada, paginaActual,tamanio)
@@ -100,8 +107,15 @@ class ProductFragment : Fragment() , AdapterView.OnItemSelectedListener{
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val selectedCategory = parent?.getItemAtPosition(position) as Category
-        categoriaSeleccionada = selectedCategory.id
+        val selectedCategory = parent?.getItemAtPosition(position) as String
+        when(selectedCategory){
+            "Sin seleccion" -> categoriaSeleccionada = null
+            "Coffees" -> categoriaSeleccionada = 1
+            "Teas" -> categoriaSeleccionada = 2
+            "Cocktails" -> categoriaSeleccionada = 3
+            "Pintxos" -> categoriaSeleccionada = 4
+            "Desserts" -> categoriaSeleccionada = 5
+        }
 
     }
 

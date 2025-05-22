@@ -84,4 +84,7 @@ class ProductAdapter() : RecyclerView.Adapter<ProductView>() {
         miListaProductos.addAll(newItems)
         notifyItemRangeInserted(startPosition, newItems.size)
     }
+
+
+
 }

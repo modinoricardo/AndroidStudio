@@ -19,15 +19,6 @@ class ProductViewModel : ViewModel() {
     private val _categorias = MutableLiveData<List<Category>>()
     val categorias: LiveData<List<Category>> = _categorias
 
-    private val _paginaActual = MutableLiveData(1)
-    val paginaActual: LiveData<Int> = _paginaActual
-
-    private val _totalPaginas = MutableLiveData(1)
-    val totalPaginas: LiveData<Int> = _totalPaginas
-
-    private var categoriaSeleccionadaId: Long? = null
-    private var textoBuscado: String? = null
-
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> get() = _isLoading
 
@@ -37,8 +28,6 @@ class ProductViewModel : ViewModel() {
                 val result = mainState.recuperarProductos(textoBuscado, categoriaSeleccionadaId, paginaActual, tamanio)
                 result?.let {
                     _productos.value = it
-                    _totalPaginas.value = it.totalPages
-                    _paginaActual.value = it.number + 1
                 }
             } catch (_: Exception) {
                 _productos.value = ResponseProduct()
@@ -47,10 +36,7 @@ class ProductViewModel : ViewModel() {
     }
 
     fun filtrarProductos(search: String?, categoriaId: Long?) {
-        this.textoBuscado = search
-        this.categoriaSeleccionadaId = categoriaId
-        _paginaActual.value = 1
-//        cargarProductos()
+
     }
 
 
@@ -62,18 +48,8 @@ class ProductViewModel : ViewModel() {
         }
     }
 
-    fun seleccionarCategoria(posicion: Int) {
-        val listaCategorias = _categorias.value ?: return
-        categoriaSeleccionadaId = listaCategorias[posicion].id
-        _paginaActual.value = 0
-//        cargarProductos()
-    }
-
     fun paginaSiguiente() {
-        if ((_paginaActual.value ?: 0) < (_totalPaginas.value ?: 1) - 1) {
-            _paginaActual.value = (_paginaActual.value ?: 0) + 1
-//            cargarProductos()
-        }
+
     }
 
 }

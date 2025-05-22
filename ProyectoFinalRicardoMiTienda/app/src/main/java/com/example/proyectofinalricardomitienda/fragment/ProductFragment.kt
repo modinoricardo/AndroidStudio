@@ -4,16 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.proyectofinalricardomitienda.R
 import com.example.proyectofinalricardomitienda.adapter.ProductAdapter
 import com.example.proyectofinalricardomitienda.databinding.FragmentProductBinding
+import com.example.proyectofinalricardomitienda.entities.Category
 import com.example.proyectofinalricardomitienda.model.ProductViewModel
 import com.google.android.material.snackbar.Snackbar
 
-class ProductFragment : Fragment() {
+class ProductFragment : Fragment() , AdapterView.OnItemSelectedListener{
 
     private var _binding: FragmentProductBinding? = null
     private val binding get() = _binding!!
@@ -21,6 +25,7 @@ class ProductFragment : Fragment() {
     private val viewModel: ProductViewModel by viewModels()
     private lateinit var adapter: ProductAdapter
     private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var spinner: Spinner
 
     private var textoSeleccionado: String? = null
     private var categoriaSeleccionada: Long? = null
@@ -38,6 +43,9 @@ class ProductFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        spinner = view.findViewById(R.id.spinnerPCategory)
+        spinner.onItemSelectedListener = this
 
         adapter = ProductAdapter()
         layoutManager = LinearLayoutManager(requireContext())
@@ -72,7 +80,7 @@ class ProductFragment : Fragment() {
         // Botón de búsqueda
         binding.btnPSearch.setOnClickListener {
             textoSeleccionado = binding.txtPSearch.text.toString().takeIf { it.isNotBlank() }
-            categoriaSeleccionada = binding.spinnerPCategory.selectedItemPosition.takeIf { it > 0 }?.toLong()
+//            categoriaSeleccionada = binding.spinnerPCategory.selectedItemPosition.takeIf { it > 0 }?.toLong()
             viewModel.cargarProductos(textoSeleccionado, categoriaSeleccionada, paginaActual,tamanio)
         }
 
@@ -89,5 +97,16 @@ class ProductFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() = ProductFragment()
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        val selectedCategory = parent?.getItemAtPosition(position) as Category
+        categoriaSeleccionada = selectedCategory.id
+
+    }
+
+    //Se deja tal cual
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("Not yet implemented")
     }
 }

@@ -10,7 +10,6 @@ import com.example.proyectofinalricardomitienda.entities.ShoppingCartProduct
 import com.example.proyectofinalricardomitienda.view.ShoppingCartView
 
 class ShoppingCartAdapter(private val dataSet: ShoppingCartProduct) : RecyclerView.Adapter<ShoppingCartView>() {
-    private lateinit var myContexto: Context
     var positionClicked = RecyclerView.NO_POSITION
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingCartView {
@@ -33,7 +32,7 @@ class ShoppingCartAdapter(private val dataSet: ShoppingCartProduct) : RecyclerVi
         holder.txtSCPrice.text = product.unitPrice.toString()
         holder.txtSCTotalPrice.text = product.totalPrice.toString()
 
-        // Pinta el fondo solo si está seleccionado
+        // Pintamos el fondo solo si está seleccionado
         if (position == positionClicked) {
             holder.fondo.setBackgroundColor(android.graphics.Color.GRAY)
         } else {

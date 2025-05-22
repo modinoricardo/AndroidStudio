@@ -12,9 +12,6 @@ interface ShoppingCartApiService {
     @GET("cart")
     suspend fun getShoppingCart(@Header("Authorization") auth:String): Response<ShoppingCartProduct>
 
-    @POST("cart/{productId}")
-    suspend fun addProduct(@Path("productId") productId:Long, @Header("Authorization") auth:String):Response<ShoppingCartProduct>
-
     @POST("cart/{productId}/{quantity}")
     suspend fun addManyProduct(@Path("productId") productId:Long, @Path("quantity") quantity: Int, @Header("Authorization") auth:String):Response<ShoppingCartProduct>
 

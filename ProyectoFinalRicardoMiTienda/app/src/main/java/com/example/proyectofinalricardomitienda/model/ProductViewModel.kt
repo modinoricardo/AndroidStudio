@@ -29,7 +29,7 @@ class ProductViewModel : ViewModel() {
                     _productos.value = it
                 }
             } catch (_: Exception) {
-                _productos.value = ResponseProduct()
+//                _productos.value = ResponseProduct()
             }
         }
     }

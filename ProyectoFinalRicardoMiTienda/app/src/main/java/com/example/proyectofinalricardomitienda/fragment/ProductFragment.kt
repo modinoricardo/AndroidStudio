@@ -104,7 +104,7 @@ class ProductFragment : Fragment() , AdapterView.OnItemSelectedListener{
                 val lastVisible = layoutManager.findLastVisibleItemPosition()
                 val totalItems = adapter.itemCount
 
-                if (lastVisible >= totalItems - 1) {
+                if (lastVisible >= totalItems - 1 && totalItems < viewModel.productos.value!!.page.totalElements) {
                     Snackbar.make(rv, "¿Cargar más productos?", Snackbar.LENGTH_LONG)
                         .setAction("Sí") {
 //                            viewModel.paginaSiguiente()

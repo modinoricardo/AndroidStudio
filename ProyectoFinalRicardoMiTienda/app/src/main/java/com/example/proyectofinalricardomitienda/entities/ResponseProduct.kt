@@ -1,9 +1,6 @@
 package com.example.proyectofinalricardomitienda.entities
 
 data class ResponseProduct(
-    val content: MutableList<Product> = mutableListOf(),
-    val totalElements: Int = 0,
-    val totalPages: Int = 0,
-    val size: Int = 0,
-    val number: Int = 0,
+    val content: ArrayList<Product>,
+    val page: Page
 )

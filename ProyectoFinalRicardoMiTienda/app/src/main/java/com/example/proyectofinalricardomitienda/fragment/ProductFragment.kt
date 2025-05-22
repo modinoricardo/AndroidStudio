@@ -62,7 +62,7 @@ class ProductFragment : Fragment() {
                 if (lastVisible >= totalItems - 1) {
                     Snackbar.make(rv, "¿Cargar más productos?", Snackbar.LENGTH_LONG)
                         .setAction("Sí") {
-                            viewModel.paginaSiguiente()
+//                            viewModel.paginaSiguiente()
                         }
                         .show()
                 }
@@ -71,9 +71,9 @@ class ProductFragment : Fragment() {
 
         // Botón de búsqueda
         binding.btnPSearch.setOnClickListener {
-            val texto = binding.txtPSearch.text.toString().takeIf { it.isNotBlank() }
-            val catPos = binding.spinnerPCategory.selectedItemPosition.takeIf { it > 0 }?.toLong()
-            viewModel.filtrarProductos(texto, catPos)
+            textoSeleccionado = binding.txtPSearch.text.toString().takeIf { it.isNotBlank() }
+            categoriaSeleccionada = binding.spinnerPCategory.selectedItemPosition.takeIf { it > 0 }?.toLong()
+            viewModel.cargarProductos(textoSeleccionado, categoriaSeleccionada, paginaActual,tamanio)
         }
 
         // Carga inicial del ViewModel, limpiamos all

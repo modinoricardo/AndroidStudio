@@ -35,21 +35,12 @@ class ProductViewModel : ViewModel() {
         }
     }
 
-    fun filtrarProductos(search: String?, categoriaId: Long?) {
-
-    }
-
-
     fun cargarCategorias() {
         viewModelScope.launch {
             try {
                 _categorias.value = mainState.getAllCategories()
             } catch (_: Exception) {}
         }
-    }
-
-    fun paginaSiguiente() {
-
     }
 
 }

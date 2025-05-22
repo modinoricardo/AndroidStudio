@@ -22,6 +22,11 @@ class ProductFragment : Fragment() {
     private lateinit var adapter: ProductAdapter
     private lateinit var layoutManager: LinearLayoutManager
 
+    private var textoSeleccionado: String? = null
+    private var categoriaSeleccionada: Long? = null
+    private var paginaActual:Int = 1
+    private var tamanio:Int = 5
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -73,7 +78,7 @@ class ProductFragment : Fragment() {
 
         // Carga inicial del ViewModel, limpiamos all
         viewModel.cargarCategorias()
-        viewModel.cargarProductos(null, 1, 1, 5)
+        viewModel.cargarProductos(textoSeleccionado, categoriaSeleccionada, paginaActual, tamanio)
     }
 
     override fun onDestroyView() {

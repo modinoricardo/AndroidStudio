@@ -3,12 +3,12 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="app_name">ProyectoFinalRicardoMiTienda</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string-array name="spinnerCategory">
-        <item>Sin seleccion</item>
-        <item>Coffees</item>
-        <item>Teas</item>
-        <item>Cocktails</item>
-        <item>Pintxos</item>
-        <item>Desserts</item>
-    </string-array>
+<!--    <string-array name="spinnerCategory">-->
+<!--        <item>Sin seleccion</item>-->
+<!--        <item>Coffees</item>-->
+<!--        <item>Teas</item>-->
+<!--        <item>Cocktails</item>-->
+<!--        <item>Pintxos</item>-->
+<!--        <item>Desserts</item>-->
+<!--    </string-array>-->
 </resources>

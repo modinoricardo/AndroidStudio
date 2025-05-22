@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.proyectofinalricardomitienda.entities.Category
+import com.example.proyectofinalricardomitienda.entities.CategoryResponse
 import com.example.proyectofinalricardomitienda.entities.Product
 import com.example.proyectofinalricardomitienda.entities.ResponseProduct
 import com.example.proyectofinalricardomitienda.state.MainState
@@ -16,8 +17,8 @@ class ProductViewModel : ViewModel() {
     private val _productos = MutableLiveData<ResponseProduct>()
     val productos: LiveData<ResponseProduct> = _productos
 
-    private val _categorias = MutableLiveData<List<Category>>()
-    val categorias: LiveData<List<Category>> = _categorias
+    private val _categorias = MutableLiveData<CategoryResponse>()
+    val categorias: LiveData<CategoryResponse> = _categorias
 
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> get() = _isLoading

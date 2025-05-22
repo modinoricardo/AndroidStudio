@@ -53,7 +53,6 @@
                 android:id="@+id/spinnerPCategory"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:entries="@array/spinnerCategory"
                 app:layout_constraintBaseline_toBaselineOf="@id/tilSearch"
                 app:layout_constraintStart_toEndOf="@id/tilSearch"
                 app:layout_constraintEnd_toEndOf="parent"

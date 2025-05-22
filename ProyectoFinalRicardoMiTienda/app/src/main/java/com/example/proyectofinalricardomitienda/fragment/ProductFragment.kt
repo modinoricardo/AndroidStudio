@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -53,6 +55,35 @@ class ProductFragment : Fragment() , AdapterView.OnItemSelectedListener{
         layoutManager = LinearLayoutManager(requireContext())
         binding.rvProducts.layoutManager = layoutManager
         binding.rvProducts.adapter = adapter
+
+        viewModel.categorias.observe(viewLifecycleOwner) { it ->
+            val categoryList = it.categories
+
+            val adapter = object :ArrayAdapter<Category>(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                categoryList
+            ){
+                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                    val view = super.getView(position, convertView, parent) as TextView
+                    view.text = categoryList[position].name
+                    return view
+                }
+
+                override fun getDropDownView(
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
+                ): View {
+                    val view = super.getDropDownView(position, convertView, parent) as TextView
+                    view.text = categoryList[position].name
+                    return view
+                }
+            }
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+
+        }
 
         viewModel.productos.observe(viewLifecycleOwner) { productList ->
             productList?.let {
@@ -107,15 +138,8 @@ class ProductFragment : Fragment() , AdapterView.OnItemSelectedListener{
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val selectedCategory = parent?.getItemAtPosition(position) as String
-        when(selectedCategory){
-            "Sin seleccion" -> categoriaSeleccionada = null
-            "Coffees" -> categoriaSeleccionada = 1
-            "Teas" -> categoriaSeleccionada = 2
-            "Cocktails" -> categoriaSeleccionada = 3
-            "Pintxos" -> categoriaSeleccionada = 4
-            "Desserts" -> categoriaSeleccionada = 5
-        }
+        val selectedCategory = parent?.getItemAtPosition(position) as Category
+        categoriaSeleccionada = selectedCategory.id
 
     }
 

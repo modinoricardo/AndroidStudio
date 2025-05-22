@@ -1,6 +1,7 @@
 package com.example.proyectofinalricardomitienda.state
 
 import com.example.proyectofinalricardomitienda.entities.Category
+import com.example.proyectofinalricardomitienda.entities.CategoryResponse
 import com.example.proyectofinalricardomitienda.service.ProductApiService
 import com.example.proyectofinalricardomitienda.entities.ResponseProduct
 import com.example.proyectofinalricardomitienda.service.ShoppingCartApiService
@@ -46,18 +47,14 @@ class MainState {
         return resp.body()
     }
 
-    suspend fun getAllCategories(): List<Category> {
+    suspend fun getAllCategories(): CategoryResponse {
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service = retrofit.create(CategoryApiService::class.java)
         val response = service.getCategories(token)
-        return if (response.isSuccessful) {
-            response.body().orEmpty()
-        } else {
-            emptyList()
-        }
+        return response.body()!!
     }
 
     suspend fun returnAllCart(): ShoppingCartProduct {

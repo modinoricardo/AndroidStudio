@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.proyectofinalricardomitienda.entities.Category
 import com.example.proyectofinalricardomitienda.entities.CategoryResponse
-import com.example.proyectofinalricardomitienda.entities.Product
 import com.example.proyectofinalricardomitienda.entities.ResponseProduct
 import com.example.proyectofinalricardomitienda.state.MainState
 import kotlinx.coroutines.launch

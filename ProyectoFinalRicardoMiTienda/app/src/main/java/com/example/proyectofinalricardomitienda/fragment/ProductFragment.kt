@@ -108,6 +108,9 @@ class ProductFragment : Fragment() , AdapterView.OnItemSelectedListener{
                     Snackbar.make(rv, "¿Cargar más productos?", Snackbar.LENGTH_LONG)
                         .setAction("Sí") {
 //                            viewModel.paginaSiguiente()
+                            paginaActual++
+                            busqueda = false
+                            viewModel.cargarProductos(textoSeleccionado, categoriaSeleccionada, paginaActual, tamanio)
                         }
                         .show()
                 }
@@ -116,6 +119,7 @@ class ProductFragment : Fragment() , AdapterView.OnItemSelectedListener{
 
         // Botón de búsqueda
         binding.btnPSearch.setOnClickListener {
+            paginaActual = 1
             busqueda = true
             textoSeleccionado = binding.txtPSearch.text.toString().takeIf { it.isNotBlank() }
 //            categoriaSeleccionada = binding.spinnerPCategory.selectedItemPosition.takeIf { it > 0 }?.toLong()

@@ -22,9 +22,6 @@ class ProductFragment : Fragment() {
     private lateinit var adapter: ProductAdapter
     private lateinit var layoutManager: LinearLayoutManager
 
-    // Para llevar la cuenta de cuántos ítems había antes
-    private var previousSize = 0
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,73 +34,46 @@ class ProductFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 1) Inicializamos RecyclerView y Adapter (vacío)
+        adapter = ProductAdapter()
         layoutManager = LinearLayoutManager(requireContext())
-        adapter = ProductAdapter(mutableListOf())
         binding.rvProducts.layoutManager = layoutManager
         binding.rvProducts.adapter = adapter
 
-        // 2) Scroll listener para cargar la siguiente página
-        val infiniteScroll = object : RecyclerView.OnScrollListener() {
+        viewModel.productos.observe(viewLifecycleOwner) { productList ->
+            productList?.let {
+                val lista = it.content
+                adapter.updateListProduct(lista)
+            }
+        }
+
+        binding.rvProducts.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(rv, dx, dy)
-                if (dy <= 0) return  // solo scroll hacia abajo
+                if (dy <= 0) return // solo scroll hacia abajo
 
                 val lastVisible = layoutManager.findLastVisibleItemPosition()
-                val totalItems  = adapter.itemCount
-                if (lastVisible >= totalItems - 1 && !viewModel.isLoading) {
+                val totalItems = adapter.itemCount
+
+                if (lastVisible >= totalItems - 1) {
                     Snackbar.make(rv, "¿Cargar más productos?", Snackbar.LENGTH_LONG)
                         .setAction("Sí") {
-                            viewModel.loadNextPage()
+                            viewModel.paginaSiguiente()
                         }
                         .show()
                 }
             }
-        }
-        binding.rvProducts.addOnScrollListener(infiniteScroll)
+        })
 
-        // 3) Observamos el LiveData de productos acumulados
-        viewModel.items.observe(viewLifecycleOwner) { fullList ->
-            if (previousSize == 0) {
-                // Primera carga o tras buscar: reemplaza toda la lista
-                adapter.replaceAll(fullList)
-            } else {
-                // Páginas siguientes: solo añade los nuevos
-                val nuevos = fullList.subList(previousSize, fullList.size)
-                adapter.addProducts(nuevos)
-            }
-            previousSize = fullList.size
-        }
-
-        // 4) Configuramos el botón de búsqueda
+        // Botón de búsqueda
         binding.btnPSearch.setOnClickListener {
-            // a) Reiniciamos el contador y limpiamos el adapter
-            previousSize = 0
-            adapter.replaceAll(emptyList())
-
-            // b) Quitamos y volvemos a poner el scroll listener
-            binding.rvProducts.clearOnScrollListeners()
-            binding.rvProducts.addOnScrollListener(infiniteScroll)
-
-            // c) Leemos filtro y lanzamos la petición adecuada
-            val texto = binding.txtPSearch.text.toString()
-            val catPos = binding.spinnerPCategory.selectedItemPosition.toLong()
-            when {
-                texto.isBlank() && catPos == 0L ->
-                    viewModel.refresh()                         // Sin filtro
-                texto.isBlank() ->
-                    viewModel.returnAllProductsByCategory(catPos)
-                catPos == 0L ->
-                    viewModel.returnAllProductsByName(texto)
-                else ->
-                    viewModel.returnAllProductsByAll(texto, catPos)
-            }
+            val texto = binding.txtPSearch.text.toString().takeIf { it.isNotBlank() }
+            val catPos = binding.spinnerPCategory.selectedItemPosition.takeIf { it > 0 }?.toLong()
+            viewModel.filtrarProductos(texto, catPos)
         }
 
-        // 5) Primera carga al entrar al fragment
-        previousSize = 0
-        adapter.replaceAll(emptyList())
-        viewModel.refresh()
+        // Carga inicial del ViewModel, limpiamos all
+        viewModel.cargarCategorias()
+        viewModel.cargarProductos(null, 1, 1, 5)
     }
 
     override fun onDestroyView() {

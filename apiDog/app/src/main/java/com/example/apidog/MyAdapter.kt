@@ -21,7 +21,9 @@ class MyAdapter (private val dataSet: DogRespuesta) : RecyclerView.Adapter<MyVie
     override fun onBindViewHolder(holder: MyView, position: Int) {
         val url : String = dataSet.message!![position]
         Glide.with(myContexto)
-            .load(url)
+//            .load(url)
+//            .load("http://10.0.2.2:8000/test/app/img/categories/coffee.png")
+            .load("https://www.lavanguardia.com/peliculas-series/images/profile/1956/1/w300/mO4yaPr5HwMVaYY2liJyIZfsg9d.jpg")
             .into(holder.imV1)
     }
 

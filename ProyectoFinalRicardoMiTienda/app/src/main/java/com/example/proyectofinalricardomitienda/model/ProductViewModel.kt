@@ -4,94 +4,76 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.proyectofinalricardomitienda.entities.Category
 import com.example.proyectofinalricardomitienda.entities.Product
 import com.example.proyectofinalricardomitienda.entities.ResponseProduct
-import com.example.proyectofinalricardomitienda.pagination.DatosPaginacion
 import com.example.proyectofinalricardomitienda.state.MainState
 import kotlinx.coroutines.launch
 
 class ProductViewModel : ViewModel() {
-    private val state = MainState()
-    private val pagination = DatosPaginacion()      // páginaActual = 1
-    private var _isLoading = false
+    private val mainState = MainState()
 
-    // FILTER STATE
-    private var currentSearch: String? = null
-    private var currentCategory: Long? = null
+    private val _productos = MutableLiveData<ResponseProduct>()
+    val productos: LiveData<ResponseProduct> = _productos
 
-    // Acumula productos
-    private val _items = MutableLiveData<MutableList<Product>>(mutableListOf())
-    val items: LiveData<MutableList<Product>> = _items
+    private val _categorias = MutableLiveData<List<Category>>()
+    val categorias: LiveData<List<Category>> = _categorias
 
-    // Exponer loading para el fragment
-    val isLoading: Boolean get() = _isLoading
+    private val _paginaActual = MutableLiveData(1)
+    val paginaActual: LiveData<Int> = _paginaActual
 
-    init {
-        refresh()  // carga sin filtro
-    }
+    private val _totalPaginas = MutableLiveData(1)
+    val totalPaginas: LiveData<Int> = _totalPaginas
 
-    /** Reinicia búsqueda/categoría y carga la página 1 */
-    fun refresh() {
-        currentSearch = null
-        currentCategory = null
-        pagination.paginaActual = 1
-        _items.value = mutableListOf()
-        loadNextPage()
-    }
+    private var categoriaSeleccionadaId: Long? = null
+    private var textoBuscado: String? = null
 
-    fun returnAllProductsByName(search: String) {
-        currentSearch = search
-        currentCategory = null
-        pagination.paginaActual = 1
-        _items.value = mutableListOf()
-        loadNextPage()
-    }
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> get() = _isLoading
 
-    fun returnAllProductsByCategory(cat: Long) {
-        currentSearch = null
-        currentCategory = cat
-        pagination.paginaActual = 1
-        _items.value = mutableListOf()
-        loadNextPage()
-    }
-
-    fun returnAllProductsByAll(search: String, cat: Long) {
-        currentSearch = search
-        currentCategory = cat
-        pagination.paginaActual = 1
-        _items.value = mutableListOf()
-        loadNextPage()
-    }
-
-    /**
-     * Según el filtro activo, llama al endpoint paginado
-     * correcto y acumula la lista.
-     */
-    fun loadNextPage() {
-        if (_isLoading) return
-        _isLoading = true
-
+    fun cargarProductos(textoBuscado:String?, categoriaSeleccionadaId:Long?,paginaActual:Int, tamanio:Int) {
         viewModelScope.launch {
-            // 1) Elegimos el response según filtro
-            val response = when {
-                currentSearch != null && currentCategory != null ->
-                    state.returnAllProductsByAllPaged(currentSearch!!, currentCategory!!, pagination.paginaActual)
-                currentSearch != null ->
-                    state.returnAllProductsByNamePaged(currentSearch!!, pagination.paginaActual)
-                currentCategory != null ->
-                    state.returnAllProductsByCategoryPaged(currentCategory!!, pagination.paginaActual)
-                else ->
-                    state.returnAllProductsPaged(pagination.paginaActual)
+            try {
+                val result = mainState.recuperarProductos(textoBuscado, categoriaSeleccionadaId, paginaActual, tamanio)
+                result?.let {
+                    _productos.value = it
+                    _totalPaginas.value = it.totalPages
+                    _paginaActual.value = it.number + 1
+                }
+            } catch (_: Exception) {
+                _productos.value = ResponseProduct()
             }
-
-            // 2) Acumulamos
-            val current = _items.value ?: mutableListOf()
-            current.addAll(response.content)
-            _items.postValue(current)
-
-            // 3) Avanzamos la página
-            pagination.paginaActual++
-            _isLoading = false
         }
     }
+
+    fun filtrarProductos(search: String?, categoriaId: Long?) {
+        this.textoBuscado = search
+        this.categoriaSeleccionadaId = categoriaId
+        _paginaActual.value = 1
+//        cargarProductos()
+    }
+
+
+    fun cargarCategorias() {
+        viewModelScope.launch {
+            try {
+                _categorias.value = mainState.getAllCategories()
+            } catch (_: Exception) {}
+        }
+    }
+
+    fun seleccionarCategoria(posicion: Int) {
+        val listaCategorias = _categorias.value ?: return
+        categoriaSeleccionadaId = listaCategorias[posicion].id
+        _paginaActual.value = 0
+//        cargarProductos()
+    }
+
+    fun paginaSiguiente() {
+        if ((_paginaActual.value ?: 0) < (_totalPaginas.value ?: 1) - 1) {
+            _paginaActual.value = (_paginaActual.value ?: 0) + 1
+//            cargarProductos()
+        }
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.example.proyectofinalricardomitienda.state
 
+import com.example.proyectofinalricardomitienda.entities.Category
 import com.example.proyectofinalricardomitienda.service.ProductApiService
 import com.example.proyectofinalricardomitienda.entities.ResponseProduct
 import com.example.proyectofinalricardomitienda.service.ShoppingCartApiService
@@ -7,76 +8,61 @@ import com.example.proyectofinalricardomitienda.entities.ShoppingCartProduct
 import com.example.proyectofinalricardomitienda.service.TokenApiService
 import com.example.proyectofinalricardomitienda.entities.LoginRequest
 import com.example.proyectofinalricardomitienda.exceptions.NegativeNumberException
+import com.example.proyectofinalricardomitienda.exceptions.NoRecuperaProductsException
 import com.example.proyectofinalricardomitienda.exceptions.NoStockException
+import com.example.proyectofinalricardomitienda.service.CategoryApiService
 import com.example.proyectofinalricardomitienda.util.Util
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MainState {
-    private var base = Util.URL + "api/app/v1/"
+    private var baseUrl = Util.URL + "api/app/v1/"
     private val token = "Bearer ${Util.accessToken}"
 
-    private fun retrofit() = Retrofit.Builder()
-        .baseUrl(base)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-        .create(ProductApiService::class.java)
-
-    suspend fun returnAllProductsByNamePaged(search: String, page: Int): ResponseProduct =
-        retrofit().getAllProductsByNamePaged(search, page, token).body() ?: ResponseProduct()
-
-    suspend fun returnAllProductsByCategoryPaged(cat: Long, page: Int): ResponseProduct =
-        retrofit().getAllProductsByCategoryPaged(cat, page, token).body() ?: ResponseProduct()
-
-    suspend fun returnAllProductsByAllPaged(search: String, cat: Long, page: Int): ResponseProduct =
-        retrofit().getAllProductsByAllPaged(search, cat, page, token).body() ?: ResponseProduct()
-
-    suspend fun returnAllProductsPaged(page: Int): ResponseProduct =
-        retrofit().getAllProductsPaged(token, page).body() ?: ResponseProduct()
-
-    suspend fun returnAllProducts(): ResponseProduct {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(base)
+    private val service: ProductApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        val service = retrofit.create(ProductApiService::class.java)
-
-        return service.getAllProducts(token).body() ?: ResponseProduct()
+            .create(ProductApiService::class.java)
     }
 
-    suspend fun returnAllProductsByName(search: String): ResponseProduct {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(base)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val service = retrofit.create(ProductApiService::class.java)
-
-        return service.getAllProductsByName(search,token).body() ?: ResponseProduct()
+    suspend fun recuperarProductos(
+        search: String?    = null,
+        categoriaId: Long? = null,
+        pagina: Int        = 1,
+        tamanio: Int       = 5
+    ): ResponseProduct? {
+        val resp = service.getProducts(
+            search     = search,
+            cat        = categoriaId,
+            pageNumber = pagina,
+            pageSize   = tamanio,
+            auth       = token
+        )
+        if (!resp.isSuccessful) {
+            throw NoRecuperaProductsException("Error HTTP ${resp.code()} al recuperar productos")
+        }
+        return resp.body()
     }
 
-    suspend fun returnAllProductsByCategory(cat: Long): ResponseProduct {
+    suspend fun getAllCategories(): List<Category> {
         val retrofit = Retrofit.Builder()
-            .baseUrl(base)
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        val service = retrofit.create(ProductApiService::class.java)
-
-        return service.getAllProductsByCategory(cat, token).body() ?: ResponseProduct()
-    }
-
-    suspend fun returnAllProductsByAll(search: String, cat: Long): ResponseProduct {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(base)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val service = retrofit.create(ProductApiService::class.java)
-
-        return service.getAllProductsByAll(search, cat, token).body() ?: ResponseProduct()
+        val service = retrofit.create(CategoryApiService::class.java)
+        val response = service.getCategories(token)
+        return if (response.isSuccessful) {
+            response.body().orEmpty()
+        } else {
+            emptyList()
+        }
     }
 
     suspend fun returnAllCart(): ShoppingCartProduct {
         val retrofit = Retrofit.Builder()
-            .baseUrl(base)
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service = retrofit.create(ShoppingCartApiService::class.java)
@@ -84,69 +70,49 @@ class MainState {
         return service.getShoppingCart(token).body()!!
     }
 
-    suspend fun addProductToCart(productId: Long): ShoppingCartProduct {
+    suspend fun addProductToCart(productId: Long, quantity: Int = 1): ShoppingCartProduct {
         val retrofit = Retrofit.Builder()
-            .baseUrl(base)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val service = retrofit.create(ShoppingCartApiService::class.java)
-        val call= service.addProduct(productId, token)
-
-        if (call.code()==200) {
-            val body = call.body()
-            return body!!
-        }else if(call.code()==409){
-            throw NoStockException("No hay suficiente stock")
-        }else if(call.code()==400){
-            throw NegativeNumberException("Pon un valor positivo")
-        }else{
-            throw Exception("Algo ha pasado")
-        }
-    }
-
-    suspend fun addManyProductToCart(productId: Long, quantity: Int): ShoppingCartProduct {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(base)
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service = retrofit.create(ShoppingCartApiService::class.java)
 
-        val call= service.addManyProduct(productId, quantity, token);
+        val call = service.addManyProduct(productId, quantity, token);
 
-        if (call.code()==200) {
+        if (call.code() == 200) {
             val body = call.body()
             return body!!
-        }else if(call.code()==409){
+        } else if (call.code() == 409) {
             throw NoStockException("No hay suficiente stock")
-        }else if(call.code()==400){
+        } else if (call.code() == 400) {
             throw NegativeNumberException("Pon un valor positivo")
-        }else{
+        } else {
             throw Exception("Algo ha pasado")
         }
     }
 
     suspend fun deleteOneProductFromCart(shoppingCartProductId: Long): ShoppingCartProduct {
         val retrofit = Retrofit.Builder()
-            .baseUrl(base)
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service = retrofit.create(ShoppingCartApiService::class.java)
 
-        return service.deleteOneProduct(shoppingCartProductId, token).body() !!
+        return service.deleteOneProduct(shoppingCartProductId, token).body()!!
     }
 
     suspend fun deleteAllProductsFromCart(): ShoppingCartProduct {
         val retrofit = Retrofit.Builder()
-            .baseUrl(base)
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service = retrofit.create(ShoppingCartApiService::class.java)
-        return service.deleteAllProducts(token).body() !!
+        return service.deleteAllProducts(token).body()!!
     }
 
     suspend fun login(user: String, password: String): Int {
         val retrofit = Retrofit.Builder()
-            .baseUrl(base)
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service = retrofit.create(TokenApiService::class.java)

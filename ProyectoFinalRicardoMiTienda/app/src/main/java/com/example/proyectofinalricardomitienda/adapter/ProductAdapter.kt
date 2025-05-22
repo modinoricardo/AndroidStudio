@@ -12,17 +12,11 @@ import com.example.proyectofinalricardomitienda.activity.ProductDetailActivity
 import com.example.proyectofinalricardomitienda.entities.Product
 import com.example.proyectofinalricardomitienda.view.ProductView
 import com.example.proyectofinalricardomitienda.util.Util
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.RequestListener            // ← aquí
-import com.bumptech.glide.request.target.Target             // ← aquí
-import com.bumptech.glide.load.engine.GlideException        // ← aquí
-import com.bumptech.glide.load.DataSource                  // ← aquí
 
-class ProductAdapter(
-    private val items: MutableList<Product>
-) : RecyclerView.Adapter<ProductView>() {
+class ProductAdapter() : RecyclerView.Adapter<ProductView>() {
 
     private lateinit var myContexto: Context
+    private val miListaProductos = ArrayList<Product>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductView {
         myContexto = parent.context
@@ -31,10 +25,10 @@ class ProductAdapter(
         return ProductView(view)
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = miListaProductos.size
 
     override fun onBindViewHolder(holder: ProductView, position: Int) {
-        val product = items[position]
+        val product = miListaProductos[position]
 
         // 1) Construye la URL completa de forma segura:
         val base = Util.URL.removeSuffix("/")        // "http://10.0.2.2:8000/test/app"
@@ -44,6 +38,7 @@ class ProductAdapter(
         Log.d("ProductAdapter", "Cargando imagen: $fullUrl")
 
         // 2) Carga la imagen con placeholder, error y fallback:
+        Log.i("image",fullUrl)
         Glide.with(holder.productImage.context)
             .load(fullUrl)
             .placeholder(R.drawable.image_carga)
@@ -75,18 +70,18 @@ class ProductAdapter(
     /**
      * Añade nuevos productos al final y notifica la inserción.
      */
-    fun addProducts(newItems: List<Product>) {
-        val start = items.size
-        items.addAll(newItems)
-        notifyItemRangeInserted(start, newItems.size)
-    }
+//    fun addProducts(newItems: ResponseProduct) {
+//        val start = items.size
+//        items.addAll(newItems)
+//        notifyItemRangeInserted(start, newItems.size)
+//    }
 
     /**
-     * Reemplaza por completo la lista de productos (útil en refresh).
+     * Reemplaza por completo la lista de productos.
      */
-    fun replaceAll(newItems: List<Product>) {
-        items.clear()
-        items.addAll(newItems)
-        notifyDataSetChanged()
+    fun updateListProduct(newItems: List<Product>) {
+        val startPosition = miListaProductos.size
+        miListaProductos.addAll(newItems)
+        notifyItemRangeInserted(startPosition, newItems.size)
     }
 }

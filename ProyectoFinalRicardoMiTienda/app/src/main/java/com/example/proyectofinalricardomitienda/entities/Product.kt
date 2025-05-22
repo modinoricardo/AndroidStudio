@@ -1,7 +1,5 @@
 package com.example.proyectofinalricardomitienda.entities
 
-import com.google.gson.annotations.SerializedName
-
 data class Product (
     val id: Long,
     val categoryName: String,

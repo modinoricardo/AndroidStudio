@@ -35,7 +35,7 @@ class ShoppingCartAdapter(private val dataSet: ShoppingCartProduct) : RecyclerVi
 
         // Pinta el fondo solo si está seleccionado
         if (position == positionClicked) {
-            holder.fondo.setBackgroundColor(android.graphics.Color.CYAN)
+            holder.fondo.setBackgroundColor(android.graphics.Color.GRAY)
         } else {
             holder.fondo.setBackgroundColor(android.graphics.Color.TRANSPARENT)
         }

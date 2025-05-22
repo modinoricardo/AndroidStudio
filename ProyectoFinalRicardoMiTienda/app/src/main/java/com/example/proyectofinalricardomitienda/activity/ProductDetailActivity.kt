@@ -98,46 +98,4 @@ class ProductDetailActivity : AppCompatActivity() {
         }
         }
 
-//        with(binding) {
-//            txtDetailProductName.text = productName
-//            txtDetailProductCategory.text = productCategoryName
-//            txtDetailProductDescription.text = productDescription
-//            txtDetailProductPrice.text = productPrice.toString()
-//
-//            Glide.with(this@ProductDetailActivity).load(productImageUrl).into(imgDetailProduct)
-//
-//            txtQuantity.text = "1"
-//
-//            btnIncrement.setOnClickListener {
-//                val currentQuantity = txtQuantity.text.toString().toInt()
-//                txtQuantity.text = (currentQuantity + 1).toString()
-//            }
-//
-//            btnDecrement.setOnClickListener {
-//                val currentQuantity = txtQuantity.text.toString().toInt()
-//                if (currentQuantity > 1) {
-//                    txtQuantity.text = (currentQuantity - 1).toString()
-//                }
-//            }
-//
-//            btnAddToCart.setOnClickListener {
-//                val quantity = txtQuantity.text.toString().toInt()
-//                viewModel.addProductToCart(productId, quantity)
-//            }
-//
-//            btnBack.setOnClickListener {
-//                finish()
-//            }
-//        }
-
-//        viewModel.cartError.observe(this) { result ->
-//            //Si el mensaje de error es != null mostrar carrito
-//            if (result == null) {
-//                Toast.makeText(this, "Producto añadido al carrito", Toast.LENGTH_SHORT).show()
-//                finish()
-//            } else {
-//                Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
-//            }
-//        }
-
 }

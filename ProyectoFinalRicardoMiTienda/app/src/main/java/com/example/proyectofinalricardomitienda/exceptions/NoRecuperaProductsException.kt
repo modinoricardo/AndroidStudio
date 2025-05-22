@@ -1,0 +1,3 @@
+package com.example.proyectofinalricardomitienda.exceptions
+
+class NoRecuperaProductsException(message:String):Exception(message)

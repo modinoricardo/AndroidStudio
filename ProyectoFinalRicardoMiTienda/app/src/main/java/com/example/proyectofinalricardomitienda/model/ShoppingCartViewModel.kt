@@ -58,7 +58,7 @@ class ShoppingCartViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = if (quantity > 1) {
-                    state.addManyProductToCart(productId, quantity)
+                    state.addProductToCart(productId, quantity)
                 } else {
                     state.addProductToCart(productId)
                 }

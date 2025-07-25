@@ -62,18 +62,15 @@ class PaginaPrincipal : AppCompatActivity(), NavigationView.OnNavigationItemSele
         binding = ActivityPaginaPrincipalBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Ajuste de inset/padding…
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val sys = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(sys.left, sys.top, sys.right, sys.bottom)
             insets
         }
 
-        // Toolbar
         myMaterialToolbar = findViewById(R.id.myToolbar)
         setSupportActionBar(myMaterialToolbar)
 
-        // Drawer toggle
         val toggle = ActionBarDrawerToggle(
             this, binding.main, myMaterialToolbar,
             R.string.navigation_drawer_open,
@@ -82,7 +79,6 @@ class PaginaPrincipal : AppCompatActivity(), NavigationView.OnNavigationItemSele
         binding.main.addDrawerListener(toggle)
         toggle.syncState()
 
-        // Listener de navegación
         binding.myNavegationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.id_inicio -> {
@@ -105,17 +101,14 @@ class PaginaPrincipal : AppCompatActivity(), NavigationView.OnNavigationItemSele
             true
         }
 
-        // *** Aquí cargamos la pestaña Home por defecto ***
+        // Cargamos la pestaña Home por defecto
         if (savedInstanceState == null) {
-            // 1) Marcamos el item Home en el menú
             binding.myNavegationView.setCheckedItem(R.id.id_inicio)
-            // 2) Mostramos el WebFragment
             supportFragmentManager.beginTransaction()
                 .replace(R.id.myLinearL, WebFragment.newInstance(Util.URL))
                 .commit()
         }
 
-        // Manejar “back” en el drawer
         onBackPressedDispatcher.addCallback(this) {
             if (binding.main.isDrawerOpen(GravityCompat.START)) {
                 binding.main.closeDrawer(GravityCompat.START)

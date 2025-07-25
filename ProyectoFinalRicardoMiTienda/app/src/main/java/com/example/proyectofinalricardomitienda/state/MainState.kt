@@ -1,6 +1,5 @@
 package com.example.proyectofinalricardomitienda.state
 
-import com.example.proyectofinalricardomitienda.entities.Category
 import com.example.proyectofinalricardomitienda.entities.CategoryResponse
 import com.example.proyectofinalricardomitienda.service.ProductApiService
 import com.example.proyectofinalricardomitienda.entities.ResponseProduct

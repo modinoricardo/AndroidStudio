@@ -117,7 +117,6 @@ class ProductFragment : Fragment() , AdapterView.OnItemSelectedListener{
             }
         })
 
-        // Botón de búsqueda
         binding.btnPSearch.setOnClickListener {
             paginaActual = 1
             busqueda = true

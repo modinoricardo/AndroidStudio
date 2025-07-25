@@ -31,7 +31,6 @@ class ProductAdapter() : RecyclerView.Adapter<ProductView>() {
     override fun onBindViewHolder(holder: ProductView, position: Int) {
         val product = miListaProductos[position]
 
-        // 1) Construye la URL completa de forma segura:
 //        val base = Util.URL.removeSuffix("/")        // "http://10.0.2.2:8000/test/app"
         val base = Util.URL2.removeSuffix("/")
         val path = product.imageUrl.removePrefix("/") // "img/products/…"
@@ -42,10 +41,10 @@ class ProductAdapter() : RecyclerView.Adapter<ProductView>() {
 
         val options = RequestOptions()
             .disallowHardwareConfig()
-        // 2) Carga la imagen con placeholder, error y fallback:
+        // Carga la imagen con placeholder, error y fallback:
         Log.i("image",fullUrl)
-        //No funciona con la url 10.0.2.2 asi que necesito usar la ip del ordenador,
-        //si estuviera desplegado en azure el problema se solucionaria por poner la ip del servidor desplegado
+        // No funciona con la url 10.0.2.2 asi que necesito usar la ip del ordenador,
+        // Si estuviera desplegado en azure el problema se solucionaria por poner la ip del servidor desplegado
         Glide.with(myContexto)
             .load(fullUrl)
             .apply(options)
@@ -54,7 +53,6 @@ class ProductAdapter() : RecyclerView.Adapter<ProductView>() {
 //            .fallback(R.drawable.image_carga)
             .into(holder.productImage)
 
-        // 3) Textos y click:
         holder.txtPName.text        = product.name
         holder.txtPPrice.text       = product.price.toString()
         holder.txtPDescription.text = product.description

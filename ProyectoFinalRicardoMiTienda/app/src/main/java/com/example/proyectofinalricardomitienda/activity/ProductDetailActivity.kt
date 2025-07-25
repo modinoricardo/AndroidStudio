@@ -47,11 +47,11 @@ class ProductDetailActivity : AppCompatActivity() {
         productPrice = intent.getDoubleExtra("product_price", 0.0)
         productImageUrl = intent.getStringExtra("product_image") ?: ""
 
-        with(binding){
-            txtDetailProductName.text        = productName
-            txtDetailProductCategory.text    = productCategoryName
+        with(binding) {
+            txtDetailProductName.text = productName
+            txtDetailProductCategory.text = productCategoryName
             txtDetailProductDescription.text = productDescription
-            txtDetailProductPrice.text       = productPrice.toString()
+            txtDetailProductPrice.text = productPrice.toString()
 
             Glide.with(this@ProductDetailActivity)
                 .load(productImageUrl)
@@ -82,20 +82,18 @@ class ProductDetailActivity : AppCompatActivity() {
             }
         }
 
-        // --- Observadores separados ---
-
-        // Éxito al añadir al carrito: cerramos detalle
+        // Éxito al añadir al carrito
         viewModel.addToCartResult.observe(this) {
             Toast.makeText(this, "Producto añadido al carrito", Toast.LENGTH_SHORT).show()
             finish()
         }
 
-        // Error al añadir al carrito: solo mostramos mensaje
+        // Error al añadir al carrito
         viewModel.cartError.observe(this) { errorMsg ->
             errorMsg?.let {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
-        }
+    }
 
 }

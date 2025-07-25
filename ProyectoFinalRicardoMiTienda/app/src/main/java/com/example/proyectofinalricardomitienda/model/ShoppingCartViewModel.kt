@@ -14,21 +14,17 @@ class ShoppingCartViewModel : ViewModel() {
 
     private val state = MainState()
 
-    // LiveData con el estado actual del carrito
     private val _datos = MutableLiveData<ShoppingCartProduct>(
         ShoppingCartProduct(arrayListOf(), 0.0)
     )
     val datos: LiveData<ShoppingCartProduct> = _datos
 
-    // LiveData para el resultado de añadir al carrito
     private val _addToCartResult = MutableLiveData<ShoppingCartProduct>()
     val addToCartResult: LiveData<ShoppingCartProduct> = _addToCartResult
 
-    // LiveData para el resultado de eliminar uno o todo
     private val _deleteFromCartResult = MutableLiveData<ShoppingCartProduct>()
     val deleteFromCartResult: LiveData<ShoppingCartProduct> = _deleteFromCartResult
 
-    // LiveData para errores en operaciones de carrito
     private val _cartError = MutableLiveData<String?>()
     val cartError: LiveData<String?> = _cartError
 
@@ -37,7 +33,6 @@ class ShoppingCartViewModel : ViewModel() {
         returnAllCart()
     }
 
-    /** Recupera todo el carrito del backend */
     fun returnAllCart() {
         viewModelScope.launch {
             try {
@@ -50,10 +45,6 @@ class ShoppingCartViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Añade un producto al carrito (o varios si quantity>1).
-     * Actualiza _addToCartResult y _datos al finalizar.
-     */
     fun addProductToCart(productId: Long, quantity: Int = 1) {
         viewModelScope.launch {
             try {
@@ -75,10 +66,6 @@ class ShoppingCartViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Elimina un único producto del carrito por su productId.
-     * Actualiza _deleteFromCartResult y _datos al finalizar.
-     */
     fun deleteProductFromCart(productId: Long) {
         viewModelScope.launch {
             try {
@@ -92,10 +79,6 @@ class ShoppingCartViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Vacía todo el carrito.
-     * Actualiza _deleteFromCartResult y _datos al finalizar.
-     */
     fun deleteAllProductsFromCart() {
         viewModelScope.launch {
             try {

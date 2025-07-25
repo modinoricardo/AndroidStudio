@@ -113,7 +113,6 @@ class ShoppingCartFragment : Fragment() {
                 val totalLineas = shoppingCartData.appCartItems.size
                 txtTotalCartQuantity.text = "Productos distintos: $totalLineas"
 
-                // Adapter
                 myAdapter = ShoppingCartAdapter(shoppingCartData)
                 rvShoppingCart.adapter = myAdapter
             })
@@ -126,7 +125,6 @@ class ShoppingCartFragment : Fragment() {
                 val totalLineas = result.appCartItems.size
                 txtTotalCartQuantity.text = "Productos distintos: $totalLineas"
 
-                // Adapter
                 myAdapter = ShoppingCartAdapter(result)
                 rvShoppingCart.adapter = myAdapter
             })

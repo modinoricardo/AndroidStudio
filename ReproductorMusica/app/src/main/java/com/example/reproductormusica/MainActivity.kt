@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import java.util.*
 import android.content.ContentUris
+import android.content.Intent
 import android.net.Uri
 import android.view.View
 import android.widget.Button
@@ -181,7 +182,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun reproducirCancion(uri: Uri, titulo: String) {
+    private fun reproducirCancionAntiguo(uri: Uri, titulo: String) {
         indiceCancionActual = canciones.indexOfFirst { it.second == uri }
         if (indiceCancionActual == -1) indiceCancionActual = 0
 
@@ -201,6 +202,13 @@ class MainActivity : AppCompatActivity() {
         textCancionActual.text = "🎵 $titulo"
         btnPausar.text = "Pausar"
         enPausa = false
+    }
+
+    private fun reproducirCancion(uri: Uri, titulo: String) {
+        val intent = Intent(this, PlayerActivity::class.java)
+        intent.putExtra("songUri", uri.toString())
+        intent.putExtra("songName", titulo)
+        startActivity(intent)
     }
 
     private fun reproducirSiguiente() {

@@ -87,6 +87,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_search -> {
+                    Toast.makeText(this, "Busqueda aún no implementada", Toast.LENGTH_SHORT).show()
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, FragmentBusqueda())
                         .commit()

@@ -75,34 +75,26 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         val fragmentContainer = findViewById<FrameLayout>(R.id.fragment_container)
 
-        // Mostrar contenido principal, recargar canciones
-        loadAudioFiles()
-        // Ocultar contenedor de fragmentos
+        // Ocultar contenedor de fragmentos y texto canción
         fragmentContainer.visibility = View.GONE
-        //Ocultar nombre cancion
         textCancionActual.visibility = View.GONE
 
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    // Mostrar contenido principal, recargar canciones
                     loadAudioFiles()
-                    // Ocultar contenedor de fragmentos
                     fragmentContainer.visibility = View.GONE
                     true
                 }
                 R.id.nav_search -> {
-                    // Mostrar fragmento búsqueda
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, FragmentBusqueda())
                         .commit()
-                    // Mostrar contenedor de fragmentos
                     fragmentContainer.visibility = View.VISIBLE
                     true
                 }
                 R.id.nav_library -> {
                     Toast.makeText(this, "Biblioteca aún no implementada", Toast.LENGTH_SHORT).show()
-                    // Si hay fragmento, mostrar contenedor; si no, ocultar según diseño
                     fragmentContainer.visibility = View.GONE
                     true
                 }
@@ -114,8 +106,6 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
-
-
 
         btnPausar.setOnClickListener {
             mediaPlayer?.let {
@@ -131,7 +121,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // 🔹 Comprobar permisos
+        // Comprobar permisos
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_AUDIO)
             != PackageManager.PERMISSION_GRANTED
         ) {
@@ -170,12 +160,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (canciones.isNotEmpty()) {
-            indiceCancionActual = 0 // empieza con la primera canción
+            indiceCancionActual = 0
             this.canciones = canciones
             val adapter = CancionAdapter(canciones) { uri, titulo ->
                 Toast.makeText(this, "Reproduciendo: $titulo", Toast.LENGTH_SHORT).show()
-                reproducirCancion(uri, titulo)
+                val intent = Intent(this, PlayerActivity::class.java)
+                val uriStrings = canciones.map { it.second.toString() } as ArrayList<String>
+                val indice = canciones.indexOfFirst { it.second == uri }
+
+                intent.putStringArrayListExtra("listaUris", uriStrings)
+                intent.putExtra("indiceActual", indice)
+                intent.putExtra("songUri", uri.toString())
+                intent.putExtra("songName", titulo)  // Aquí sí existe "titulo"
+                startActivity(intent)
             }
+
             recyclerView.adapter = adapter
         } else {
             Toast.makeText(this, "No se encontraron canciones", Toast.LENGTH_SHORT).show()

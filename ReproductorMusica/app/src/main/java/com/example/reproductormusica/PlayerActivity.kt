@@ -1,30 +1,44 @@
 package com.example.reproductormusica
 
-import android.media.MediaPlayer
+import android.content.*
 import android.net.Uri
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.widget.Button
-import android.widget.SeekBar
-import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
+import android.os.*
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class PlayerActivity : AppCompatActivity() {
 
-    private var mediaPlayer: MediaPlayer? = null
     private lateinit var seekBar: SeekBar
     private lateinit var textTitulo: TextView
     private lateinit var btnPlayPause: Button
-    private var isPlaying = false
-    private val handler = Handler(Looper.getMainLooper())
     private lateinit var textTiempoActual: TextView
     private lateinit var textDuracionTotal: TextView
+
     private lateinit var listaUris: ArrayList<String>
     private var indiceActual = 0
+    private var isPlaying = false
+
+    private var musicService: MusicService? = null
+    private var serviceBound = false
+
+    private val handler = Handler(Looper.getMainLooper())
+
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
+            val musicBinder = binder as MusicService.MusicBinder
+            musicService = musicBinder.getService()
+            serviceBound = true
+
+            val uri = Uri.parse(listaUris[indiceActual])
+            musicService?.reproducir(uri)
+            actualizarSeekBar()
+            btnPlayPause.text = "Pausar"
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            serviceBound = false
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,99 +53,51 @@ class PlayerActivity : AppCompatActivity() {
         listaUris = intent.getStringArrayListExtra("listaUris") ?: arrayListOf()
         indiceActual = intent.getIntExtra("indiceActual", 0)
 
-        val uriString = intent.getStringExtra("songUri")
-        val titulo = intent.getStringExtra("songName")
+        val titulo = intent.getStringExtra("songName") ?: "Sin título"
+        textTitulo.text = titulo
 
-        if (uriString != null) {
-            reproducirCancion(Uri.parse(uriString), titulo ?: "Desconocido")
-        }
+        val serviceIntent = Intent(this, MusicService::class.java)
+        startService(serviceIntent)
+        bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE)
+
 
         btnPlayPause.setOnClickListener {
-            mediaPlayer?.let {
-                if (isPlaying) {
-                    it.pause()
-                    btnPlayPause.text = "Reproducir"
-                } else {
-                    it.start()
-                    btnPlayPause.text = "Pausar"
-                }
-                isPlaying = !isPlaying
+            if (!serviceBound) return@setOnClickListener
+            isPlaying = !isPlaying
+            if (isPlaying) {
+                musicService?.reanudar()
+                btnPlayPause.text = "Pausar"
+            } else {
+                musicService?.pausar()
+                btnPlayPause.text = "Reproducir"
             }
         }
 
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                if (fromUser) {
-                    mediaPlayer?.seekTo(progress)
+            override fun onProgressChanged(sb: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser && serviceBound) {
+                    musicService?.buscarA(progress)
                 }
             }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStartTrackingTouch(sb: SeekBar?) {}
+            override fun onStopTrackingTouch(sb: SeekBar?) {}
         })
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mediaPlayer?.release()
-        handler.removeCallbacksAndMessages(null)
-    }
-
-    private fun formatoTiempo(millis: Int): String {
-        val minutos = (millis / 1000) / 60
-        val segundos = (millis / 1000) % 60
-        return String.format("%02d:%02d", minutos, segundos)
-    }
-
-    private fun reproducirCancion(uri: Uri, titulo: String) {
-        mediaPlayer?.release()
-        mediaPlayer = MediaPlayer().apply {
-            setDataSource(this@PlayerActivity, uri)
-            prepare()
-            start()
-            this@PlayerActivity.isPlaying = true  // Aquí referenciamos la variable de la clase
-
-            setOnCompletionListener {
-                this@PlayerActivity.isPlaying = false
-                btnPlayPause.text = "Reproducir"
-                reproducirSiguiente()
-            }
-        }
-
-
-        textTitulo.text = titulo
-        seekBar.max = mediaPlayer!!.duration
-        btnPlayPause.text = "Pausar"
-
-        actualizarSeekBar()
-    }
-
-
-    private fun reproducirSiguiente() {
-        if (listaUris.isEmpty()) return
-
-        indiceActual++
-        if (indiceActual >= listaUris.size) {
-            indiceActual = 0 // Opcional: reiniciar lista o parar reproducción
-        }
-
-        val siguienteUri = Uri.parse(listaUris[indiceActual])
-        val siguienteTitulo = "Canción ${indiceActual + 1}" // O pasa el título también si quieres
-
-        reproducirCancion(siguienteUri, siguienteTitulo)
     }
 
     private fun actualizarSeekBar() {
         handler.post(object : Runnable {
             override fun run() {
-                mediaPlayer?.let {
-                    val posicion = it.currentPosition
-                    val duracion = it.duration
-                    val tiempoRestante = duracion - posicion
+                if (serviceBound) {
+                    val pos = musicService?.posicionActual() ?: 0
+                    val dur = musicService?.duracionTotal() ?: 1
+                    val restante = dur - pos
 
-                    seekBar.progress = posicion
-                    textTiempoActual.text = formatoTiempo(posicion)
-                    textDuracionTotal.text = "-${formatoTiempo(tiempoRestante)}"
+                    seekBar.max = dur
+                    seekBar.progress = pos
+
+                    textTiempoActual.text = formatoTiempo(pos)
+                    textDuracionTotal.text = "-${formatoTiempo(restante)}"
 
                     handler.postDelayed(this, 500)
                 }
@@ -139,5 +105,18 @@ class PlayerActivity : AppCompatActivity() {
         })
     }
 
+    private fun formatoTiempo(ms: Int): String {
+        val minutos = (ms / 1000) / 60
+        val segundos = (ms / 1000) % 60
+        return String.format("%02d:%02d", minutos, segundos)
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        if (serviceBound) {
+            unbindService(connection)
+            serviceBound = false
+        }
+        handler.removeCallbacksAndMessages(null)
+    }
 }
